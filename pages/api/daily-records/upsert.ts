@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { updateDailyRecord } from "../../../datastore";
+import { updateDailyRecord } from "@datastore";
 
 type SuccessResponse = {
   success: boolean;
