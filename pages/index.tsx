@@ -14,7 +14,10 @@ const daysInMonth = new Array(31)
 /*********************** */
 
 function DayCard({ date, tasks }: any) {
-  console.log(date, tasks);
+  const totalSize = tasks.reduce(
+    (sum: number, task: any) => (sum = sum + task.size),
+    0
+  );
   return (
     <div className={styles.card}>
       <p className={styles.date}>{date}</p>
@@ -26,7 +29,7 @@ function DayCard({ date, tasks }: any) {
           </p>
         ))}
       </div>
-      <span className={styles.badge}>6</span>
+      <span className={styles.badge}>{totalSize}</span>
     </div>
   );
 }
