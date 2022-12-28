@@ -21,7 +21,16 @@ export type DailyRecordTask = {
   size: number;
   comment: string;
 };
+export type RecordMetadata = {
+  date: string;
+  day: string;
+  dayIndex: number;
+  month: string;
+  monthIndex: number;
+  year: number;
+};
 export type DailyRecord = {
+  metadata: RecordMetadata;
   tasks: DailyRecordTask[];
 };
 export type DailyRecordWithDate = DailyRecord & {
@@ -38,7 +47,8 @@ export const readDailyRecords = async (): Promise<DailyRecordWithDate[]> => {
   snapshot.forEach((doc) => {
     results.push({
       date: doc.id,
-      tasks: doc.data().tasks as any,
+      metadata: doc.data().metadata,
+      tasks: doc.data().tasks,
     });
   });
   return results;
