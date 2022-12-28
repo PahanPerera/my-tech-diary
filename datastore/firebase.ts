@@ -2,6 +2,8 @@ import * as admin from "firebase-admin";
 import { ServiceAccount } from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
 import * as serviceAccount from "/Users/pahan/Development/my-tech-diary-firebase-key.json";
+import mockData from "./../mock.json";
+import { DailyRecord, DailyRecordWithDate } from "@types";
 
 // ********* INIT FIRESTORE  ********************
 
@@ -15,27 +17,6 @@ const db = getFirestore();
 const dailyRecordsCollectionName = "daily-records";
 
 // ********* END INIT FIRESTORE  ********************
-
-export type DailyRecordTask = {
-  name: string;
-  size: number;
-  comment: string;
-};
-export type RecordMetadata = {
-  date: string;
-  day: string;
-  dayIndex: number;
-  month: string;
-  monthIndex: number;
-  year: number;
-};
-export type DailyRecord = {
-  metadata: RecordMetadata;
-  tasks: DailyRecordTask[];
-};
-export type DailyRecordWithDate = DailyRecord & {
-  date: string;
-};
 
 export const updateDailyRecord = async (date: string, data: DailyRecord) => {
   return db.collection(dailyRecordsCollectionName).doc(date).set(data);
@@ -52,4 +33,10 @@ export const readDailyRecords = async (): Promise<DailyRecordWithDate[]> => {
     });
   });
   return results;
+};
+
+export const readDailyRecordsMock = async (): Promise<
+  DailyRecordWithDate[]
+> => {
+  return Promise.resolve<DailyRecordWithDate[]>(mockData as any);
 };

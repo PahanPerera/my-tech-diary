@@ -1,6 +1,8 @@
 import { AppContext } from "next/app";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import dayjs from "dayjs";
+import { DailyRecordWithDate } from "@types";
 
 /*** Putting everything into one file for now */
 
@@ -13,7 +15,7 @@ const daysInMonth = new Array(31)
 
 /*********************** */
 
-function DayCard({ date, tasks }: any) {
+function DayCard({ date, tasks = [] }: any) {
   const totalSize = tasks.reduce(
     (sum: number, task: any) => (sum = sum + task.size),
     0
@@ -23,7 +25,12 @@ function DayCard({ date, tasks }: any) {
       <p className={styles.date}>{date}</p>
       <div className={styles.tasks}>
         {tasks.map((task: any) => (
-          <p key={task.name} className={styles[`task${task.name}`]}>
+          <p
+            key={task.name}
+            className={`${styles[`task${task.name}`]} ${
+              task.size === 0 ? `${styles.taskEmpty}` : ""
+            }`}
+          >
             {task.name}
             <span> {new Array(task.size).fill(0).map((_) => "■ ")}</span>
           </p>
@@ -37,12 +44,13 @@ function DayCard({ date, tasks }: any) {
 function EmptyDayCard({ date }: any) {
   return (
     <div className={`${styles.card} ${styles.emptyCard}`}>
-      <p className={styles.date}>{date}</p>
+      {date && <p className={styles.date}>{date}</p>}
     </div>
   );
 }
 
-export default function Home({ tasksByMonth }: any) {
+export default function Home({ tasksByMonth, monthTemplate }: any) {
+  console.log(monthTemplate);
   return (
     <>
       <Head>
@@ -53,11 +61,17 @@ export default function Home({ tasksByMonth }: any) {
       </Head>
       <main className={styles.main}>
         <section className={styles.cardsContainer}>
-          {daysInMonth.map((day: string) => {
-            if (tasksByMonth[day]) {
-              return <DayCard key={day} date={day} tasks={tasksByMonth[day]} />;
+          {monthTemplate.map((day: any) => {
+            if (day.record) {
+              return (
+                <DayCard
+                  key={day.templateId}
+                  date={day.date}
+                  tasks={day.record.tasks}
+                />
+              );
             } else {
-              return <EmptyDayCard key={day} date={day} />;
+              return <EmptyDayCard key={day.templateId} date={day.date} />;
             }
           })}
         </section>
@@ -72,12 +86,32 @@ export async function getServerSideProps(context: AppContext) {
     `http://localhost:3000/api/daily-records/read`
   ).then((response: Response) => response.json());
   const map: any = {};
+  const tempMap: any = {};
 
-  data.forEach((record: any) => {
-    map[record.date] = record.tasks;
+  const monthTemplate = new Array(35).fill(0).map((_, i: number) => {
+    return { templateId: i };
   });
 
+  const firstDayIndex = dayjs(`${MONTH}.01.${YEAR}`, "MM.DD.YYYY").day() - 1;
+  console.log(firstDayIndex);
+
+  data.forEach((record: DailyRecordWithDate) => {
+    map[record.date] = record.tasks;
+    tempMap[record.date] = record;
+  });
+  for (let i = 0; i < 31; i++) {
+    const currDayIndex = i + firstDayIndex;
+    const currDate = `${MONTH}.${i + 1}.${YEAR}`;
+    const dailyRecord = tempMap[currDate];
+    (monthTemplate[currDayIndex] as any).date = currDate;
+    if (dailyRecord) {
+      (monthTemplate[currDayIndex] as any).record = dailyRecord;
+    }
+  }
+
+  // console.log(monthTemplate);
+
   return {
-    props: { tasksByMonth: map },
+    props: { tasksByMonth: map, monthTemplate },
   };
 }

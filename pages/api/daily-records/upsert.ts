@@ -1,8 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { RecordMetadata, updateDailyRecord } from "@datastore";
+import { updateDailyRecord } from "@datastore";
 import dayjs from "dayjs";
+import { RecordMetadata, SuccessResponse, ErrorResponse } from "@types";
 
 const dayNames = [
   "sunday",
@@ -30,16 +31,9 @@ const monthNames = [
   "december",
 ];
 
-type SuccessResponse = {
-  success: boolean;
-};
-
-type ErrorResponse = {
-  msg: string;
-};
-
-function getDateMetadata(date: string): RecordMetadata {
-  const dateInstance = dayjs(date, "MM.DD.YYYY");
+function getDateMetadata(fullDate: string): RecordMetadata {
+  const dateInstance = dayjs(fullDate, "MM.DD.YYYY");
+  const date = dateInstance.date();
   const dayIndex = dateInstance.day();
   const day = dayNames[dayIndex];
   const monthIndex = dateInstance.month() + 1;
@@ -47,6 +41,7 @@ function getDateMetadata(date: string): RecordMetadata {
   const year = dateInstance.year();
 
   return {
+    fullDate,
     date,
     day,
     dayIndex,
@@ -69,6 +64,6 @@ export default async function handler(
     });
     res.status(200).json({ success: true });
   } catch (error: any) {
-    res.status(500).json({ msg: JSON.stringify(error) });
+    res.status(500).json({ success: false, msg: JSON.stringify(error) });
   }
 }

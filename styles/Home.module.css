@@ -85,3 +85,8 @@
 .taskAlgo {
   color: var(--green-3);
 }
+
+.taskEmpty {
+  color: var(--gray-5);
+  text-decoration: line-through;
+}
