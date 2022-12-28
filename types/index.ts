@@ -20,6 +20,16 @@ export type DailyRecordWithDate = DailyRecord & {
   date: string;
 };
 
+export type DailyRecordWithDateMap = {
+  [key: string]: DailyRecordWithDate;
+};
+
+export type DailyRecordForMonth = {
+  id: number;
+  date: string;
+  record: DailyRecordWithDate;
+};
+
 export type SuccessResponse = {
   success: boolean;
 };

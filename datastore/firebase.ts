@@ -3,7 +3,11 @@ import { ServiceAccount } from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
 import * as serviceAccount from "/Users/pahan/Development/my-tech-diary-firebase-key.json";
 import mockData from "./../mock.json";
-import { DailyRecord, DailyRecordWithDate } from "@types";
+import {
+  DailyRecord,
+  DailyRecordWithDate,
+  DailyRecordWithDateMap,
+} from "@types";
 
 // ********* INIT FIRESTORE  ********************
 
@@ -22,21 +26,21 @@ export const updateDailyRecord = async (date: string, data: DailyRecord) => {
   return db.collection(dailyRecordsCollectionName).doc(date).set(data);
 };
 
-export const readDailyRecords = async (): Promise<DailyRecordWithDate[]> => {
+export const readDailyRecords = async (): Promise<DailyRecordWithDateMap> => {
   const snapshot = await db.collection(dailyRecordsCollectionName).get();
-  const results: DailyRecordWithDate[] = [];
+  const results: DailyRecordWithDateMap = {};
   snapshot.forEach((doc) => {
-    results.push({
+    const { metadata, tasks } = doc.data();
+    results[doc.id] = {
       date: doc.id,
-      metadata: doc.data().metadata,
-      tasks: doc.data().tasks,
-    });
+      metadata,
+      tasks,
+    };
   });
   return results;
 };
 
-export const readDailyRecordsMock = async (): Promise<
-  DailyRecordWithDate[]
-> => {
-  return Promise.resolve<DailyRecordWithDate[]>(mockData as any);
-};
+export const readDailyRecordsMock =
+  async (): Promise<DailyRecordWithDateMap> => {
+    return Promise.resolve<DailyRecordWithDateMap>(mockData as any);
+  };

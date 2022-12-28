@@ -6,12 +6,13 @@ import {
   SuccessResponseWithData,
   ErrorResponse,
   DailyRecordWithDate,
+  DailyRecordWithDateMap,
 } from "@types";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    SuccessResponseWithData<DailyRecordWithDate[]> | ErrorResponse
+    SuccessResponseWithData<DailyRecordWithDateMap> | ErrorResponse
   >
 ) {
   try {

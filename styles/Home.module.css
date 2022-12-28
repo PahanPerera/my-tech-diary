@@ -30,6 +30,10 @@
   background: var(--gray-2);
   border-color: var(--gray-5);
 }
+.invalidCard {
+  background: var(--gray-0);
+  border-color: var(--gray-0);
+}
 .card .date {
   display: inline-block;
   border-bottom-left-radius: var(--radius-2);
