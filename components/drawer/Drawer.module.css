@@ -1,0 +1,10 @@
+.drawerMain {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(var(--size-12) * 3);
+  background: var(--gradient-23);
+  height: 100vh;
+  padding: var(--size-6);
+  overflow-y: scroll;
+}

@@ -3,18 +3,22 @@ import styles from "./DailyRecordCard.module.css";
 
 export type DailyRecordCardProps = {
   dailyRecord: DailyRecord;
+  onClick?: () => void;
 };
 const getDayIcon = (day: string) => {
   return day[0].toUpperCase();
 };
 
-export function DailyRecordCard({ dailyRecord }: DailyRecordCardProps) {
+export function DailyRecordCard({
+  dailyRecord,
+  onClick,
+}: DailyRecordCardProps) {
   const totalSize = dailyRecord.tasks.reduce(
     (sum: number, task: any) => (sum = sum + task.size),
     0
   );
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={onClick}>
       <p className={styles.date}>
         {dailyRecord.date} <span>{getDayIcon(dailyRecord.metadata.day)}</span>
       </p>

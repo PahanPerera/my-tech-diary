@@ -1,13 +1,15 @@
 import { AppContext } from "next/app";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { DailyRecordWithId, DailyRecordAsMap } from "@types";
+import { DailyRecordWithId, DailyRecordAsMap, DailyRecord } from "@types";
 import { getDate, getDateMetadata } from "@utils";
 import {
   DailyRecordCard,
   DailyRecordEmptyCard,
   InValidDayCard,
 } from "@components";
+import { Drawer, DailyRecordDetails } from "@components";
+import { useState } from "react";
 
 /*** Putting everything into one file for now */
 
@@ -21,6 +23,7 @@ export default function Home({
 }: {
   monthlyRecords: DailyRecordWithId[];
 }) {
+  const [selected, setSelected] = useState<DailyRecord>();
   return (
     <>
       <Head>
@@ -37,6 +40,7 @@ export default function Home({
                 <DailyRecordCard
                   key={monthRecord.id}
                   dailyRecord={monthRecord}
+                  onClick={() => setSelected(monthRecord)}
                 />
               );
             } else if (monthRecord.date) {
@@ -52,6 +56,9 @@ export default function Home({
           })}
         </section>
       </main>
+      <Drawer>
+        <DailyRecordDetails dailyRecord={selected} />
+      </Drawer>
     </>
   );
 }

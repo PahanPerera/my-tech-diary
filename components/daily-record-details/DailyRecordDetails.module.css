@@ -1,5 +1,6 @@
-
-
+.detailsContainer {
+  font-family: var(--font-mono);
+}
 .heading {
   font-size: var(--font-size-6);
 }
@@ -8,8 +9,8 @@
 }
 
 .tasksContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--size-6);
   margin-top: var(--size-4);
 }
@@ -27,4 +28,9 @@
 .taskInputCard textarea {
   font-weight: var(--font-weight-9);
   background: white;
+}
+
+.taskInputCard textarea {
+  padding: var(--size-3);
+  font-size: var(--font-size-0);
 }
