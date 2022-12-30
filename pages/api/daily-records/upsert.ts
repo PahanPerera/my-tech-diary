@@ -2,54 +2,8 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import { updateDailyRecord } from "@datastore";
-import dayjs from "dayjs";
-import { RecordMetadata, SuccessResponse, ErrorResponse } from "@types";
-
-const dayNames = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
-
-const monthNames = [
-  "",
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
-
-function getDateMetadata(fullDate: string): RecordMetadata {
-  const dateInstance = dayjs(fullDate, "MM.DD.YYYY");
-  const date = dateInstance.date();
-  const dayIndex = dateInstance.day();
-  const day = dayNames[dayIndex];
-  const monthIndex = dateInstance.month() + 1;
-  const month = monthNames[monthIndex];
-  const year = dateInstance.year();
-
-  return {
-    fullDate,
-    date,
-    day,
-    dayIndex,
-    month,
-    monthIndex,
-    year,
-  };
-}
+import { SuccessResponse, ErrorResponse } from "@types";
+import { getDateMetadata } from "@utils";
 
 export default async function handler(
   req: NextApiRequest,
@@ -59,6 +13,7 @@ export default async function handler(
   try {
     const metadata = getDateMetadata(body.date);
     await updateDailyRecord(body.date, {
+      date: body.date,
       metadata,
       tasks: body.tasks,
     });

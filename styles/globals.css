@@ -2,5 +2,27 @@
 @import "open-props/postcss/style";
 
 body {
-  background: var(--gradient-9);
+  /* background: var(--gradient-9); */
+}
+
+.taskCoding {
+  color: var(--purple-3);
+}
+
+.taskReading {
+  color: var(--yellow-3);
+}
+.taskAlgo {
+  color: var(--green-3);
+}
+
+.taskCodingBg {
+  background-color: var(--purple-0);
+}
+
+.taskReadingBg {
+  background-color: var(--yellow-0);
+}
+.taskAlgoBg {
+  background-color: var(--green-0);
 }

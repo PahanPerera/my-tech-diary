@@ -3,11 +3,7 @@ import { ServiceAccount } from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
 import * as serviceAccount from "/Users/pahan/Development/my-tech-diary-firebase-key.json";
 import mockData from "./../mock.json";
-import {
-  DailyRecord,
-  DailyRecordWithDate,
-  DailyRecordWithDateMap,
-} from "@types";
+import { DailyRecord, DailyRecordAsMap } from "@types";
 
 // ********* INIT FIRESTORE  ********************
 
@@ -26,9 +22,9 @@ export const updateDailyRecord = async (date: string, data: DailyRecord) => {
   return db.collection(dailyRecordsCollectionName).doc(date).set(data);
 };
 
-export const readDailyRecords = async (): Promise<DailyRecordWithDateMap> => {
+export const readDailyRecords = async (): Promise<DailyRecordAsMap> => {
   const snapshot = await db.collection(dailyRecordsCollectionName).get();
-  const results: DailyRecordWithDateMap = {};
+  const results: DailyRecordAsMap = {};
   snapshot.forEach((doc) => {
     const { metadata, tasks } = doc.data();
     results[doc.id] = {
@@ -40,7 +36,6 @@ export const readDailyRecords = async (): Promise<DailyRecordWithDateMap> => {
   return results;
 };
 
-export const readDailyRecordsMock =
-  async (): Promise<DailyRecordWithDateMap> => {
-    return Promise.resolve<DailyRecordWithDateMap>(mockData as any);
-  };
+export const readDailyRecordsMock = async (): Promise<DailyRecordAsMap> => {
+  return Promise.resolve<DailyRecordAsMap>(mockData as any);
+};

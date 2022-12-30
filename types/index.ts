@@ -3,7 +3,7 @@ export type DailyRecordTask = {
   size: number;
   comment: string;
 };
-export type RecordMetadata = {
+export type DateMetadata = {
   fullDate: string;
   date: number;
   day: string;
@@ -13,22 +13,18 @@ export type RecordMetadata = {
   year: number;
 };
 export type DailyRecord = {
-  metadata: RecordMetadata;
+  date: string;
+  metadata: DateMetadata;
   tasks: DailyRecordTask[];
 };
-export type DailyRecordWithDate = DailyRecord & {
-  date: string;
+
+export type DailyRecordAsMap = {
+  [date: string]: DailyRecord;
 };
 
-export type DailyRecordWithDateMap = {
-  [key: string]: DailyRecordWithDate;
-};
-
-export type DailyRecordForMonth = {
+export type DailyRecordWithId = {
   id: number;
-  date: string;
-  record: DailyRecordWithDate;
-};
+} & DailyRecord;
 
 export type SuccessResponse = {
   success: boolean;

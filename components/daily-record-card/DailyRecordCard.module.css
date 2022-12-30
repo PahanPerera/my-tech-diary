@@ -1,0 +1,69 @@
+.card {
+  width: var(--size-12);
+  height: var(--size-11);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-2);
+  background: var(--gradient-23);
+  padding: 0 var(--size-3);
+  border-top: var(--border-size-3) solid var(--cyan-6);
+  cursor: pointer;
+  position: relative;
+}
+
+.emptyCard {
+  background: var(--gray-2);
+  border-color: var(--gray-5);
+}
+.invalidCard {
+  background: var(--gray-0);
+  border-color: var(--gray-0);
+}
+.card .date {
+  display: inline-block;
+  border-bottom-left-radius: var(--radius-2);
+  border-bottom-right-radius: var(--radius-2);
+  background: var(--cyan-6);
+  overflow: auto;
+  padding: var(--size-1) var(--size-2);
+  color: white;
+  margin-bottom: var(--size-1);
+  font-size: var(--font-size-0);
+}
+
+.emptyCard .date {
+  background: var(--gray-5);
+}
+
+.card .tasks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-1);
+  color: white;
+}
+
+.card .tasks p,
+.card .tasks p span {
+  font-size: var(--font-size-0);
+  letter-spacing: var(--font-letterspacing-0);
+}
+
+.card .badge {
+  position: absolute;
+  bottom: var(--size-2);
+  right: var(--size-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: "";
+  background-color: var(--gray-6);
+  color: white;
+  border-radius: var(--radius-round);
+  font-size: var(--font-size-0);
+  width: var(--size-5);
+  height: var(--size-5);
+}
+
+.taskEmpty {
+  color: var(--gray-5);
+  text-decoration: line-through;
+}

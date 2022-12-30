@@ -5,14 +5,13 @@ import { readDailyRecords, readDailyRecordsMock } from "@datastore";
 import {
   SuccessResponseWithData,
   ErrorResponse,
-  DailyRecordWithDate,
-  DailyRecordWithDateMap,
+  DailyRecordAsMap,
 } from "@types";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    SuccessResponseWithData<DailyRecordWithDateMap> | ErrorResponse
+    SuccessResponseWithData<DailyRecordAsMap> | ErrorResponse
   >
 ) {
   try {

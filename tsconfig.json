@@ -16,7 +16,9 @@
     "incremental": true,
     "paths": {
       "@datastore": ["./datastore"],
-      "@types": ["./types"]
+      "@types": ["./types"],
+      "@utils": ["./utils"],
+      "@components": ["./components"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
