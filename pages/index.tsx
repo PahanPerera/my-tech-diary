@@ -9,7 +9,7 @@ import {
   InValidDayCard,
 } from "@components";
 import { Drawer, DailyRecordDetails } from "@components";
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 
 /*** Putting everything into one file for now */
 
@@ -18,12 +18,46 @@ const YEAR = 2022;
 
 /*********************** */
 
+function MainContent({ monthlyRecords, onDailyRecordSelected }: any) {
+  return (
+    <main className={styles.main}>
+      <section className={styles.cardsContainer}>
+        {monthlyRecords.map((monthRecord: DailyRecordWithId) => {
+          if (monthRecord.tasks?.length > 0) {
+            return (
+              <DailyRecordCard
+                key={monthRecord.id}
+                dailyRecord={monthRecord}
+                onClick={() => onDailyRecordSelected(monthRecord)}
+              />
+            );
+          } else if (monthRecord.date) {
+            return (
+              <DailyRecordEmptyCard
+                key={monthRecord.id}
+                dailyRecord={monthRecord}
+              />
+            );
+          } else {
+            return <InValidDayCard key={monthRecord.id} />;
+          }
+        })}
+      </section>
+    </main>
+  );
+}
+
+const MainContentMemo = memo(MainContent);
+
 export default function Home({
   monthlyRecords,
 }: {
   monthlyRecords: DailyRecordWithId[];
 }) {
   const [selected, setSelected] = useState<DailyRecord>();
+  const handleDailyRecordClick = useCallback((record: DailyRecordWithId) => {
+    setSelected(record);
+  }, []);
   return (
     <>
       <Head>
@@ -32,30 +66,10 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <section className={styles.cardsContainer}>
-          {monthlyRecords.map((monthRecord: DailyRecordWithId) => {
-            if (monthRecord.tasks?.length > 0) {
-              return (
-                <DailyRecordCard
-                  key={monthRecord.id}
-                  dailyRecord={monthRecord}
-                  onClick={() => setSelected(monthRecord)}
-                />
-              );
-            } else if (monthRecord.date) {
-              return (
-                <DailyRecordEmptyCard
-                  key={monthRecord.id}
-                  dailyRecord={monthRecord}
-                />
-              );
-            } else {
-              return <InValidDayCard key={monthRecord.id} />;
-            }
-          })}
-        </section>
-      </main>
+      <MainContentMemo
+        monthlyRecords={monthlyRecords}
+        onDailyRecordSelected={handleDailyRecordClick}
+      />
       <Drawer>
         <DailyRecordDetails dailyRecord={selected} />
       </Drawer>

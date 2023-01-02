@@ -15,8 +15,8 @@ export default async function handler(
   >
 ) {
   try {
-    const records = await readDailyRecords();
-    // const records = await readDailyRecordsMock();
+    // const records = await readDailyRecords();
+    const records = await readDailyRecordsMock();
     res.status(200).json({ success: true, data: records });
   } catch (error: any) {
     res.status(500).json({ success: false, msg: JSON.stringify(error) });
